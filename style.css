@@ -1,0 +1,522 @@
+:root {
+    --dark-bg: #121212;
+    --card-bg: #1e1e1e;
+    --mission-item-bg: #282828; /* لون أغمق قليلاً من البطاقة الرئيسية */
+    --text-light: #f0f0f0;
+    --accent-color: #3498db; /* الأزرق للتعديل/التركيز */
+    --secondary-accent: #2ecc71; /* الأخضر للإنهاء/البدء (CTA) */
+    --delete-color: #c0392b; /* الأحمر للحذف */
+    --delete-hover: #e74c3c;
+    --edit-hover: #2980b9;
+    --finish-hover: #27ae60;
+    --gray-text: #b0b0b0;
+    --border-color: #333;
+    --font-family: 'Noto Sans Arabic', sans-serif;
+}
+
+/* إعادة تعيين الخطوط لـ Noto Sans Arabic بالكامل */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap');
+
+* {
+    font-family: var(--font-family);
+    padding: 0;
+    margin: 0; 
+    box-sizing: border-box;
+    scroll-behavior: smooth; 
+}
+
+body {
+    color: var(--text-light);
+    background-color: var(--dark-bg);
+    direction: rtl; 
+    text-align: right;
+    min-height: 100vh;
+}
+
+/* إعداد الخطوط لجميع العناصر */
+.mission-containar, #add-new-mission-btn, .delete-btn, .edit-btn, .finish-btn,
+#add-promp-input, #edit-promp-input, .nav-link {
+    font-size: 16px; /* حجم أساسي أصغر للحصول على مرونة أكبر */
+}
+
+/* =======================================================
+    2. تنسيق صفحة الترحيب (Landing Page)
+    ======================================================= */
+
+.landing-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* الشريط العلوي (Header) - تم تعديله ليناسب النمط الأصلي */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+.nav-link {
+    color: var(--gray-text);
+    text-decoration: none;
+    margin-right: 1.5rem;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--text-light);
+}
+
+/* قسم البطل (Hero Section) */
+.hero-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr; 
+    gap: 3rem;
+    padding: 5rem 0 7rem;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--gray-text);
+    margin-bottom: 2.5rem;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: var(--secondary-accent);
+    color: var(--dark-bg);
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+}
+
+.cta-button:hover {
+    background-color: var(--finish-hover);
+    transform: translateY(-2px);
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-icon {
+    width: 180px;
+    height: 180px;
+    color: var(--accent-color);
+    filter: drop-shadow(0 0 20px rgba(52, 152, 219, 0.5)); 
+}
+
+/* قسم المميزات (Features Section) */
+.features-section {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.features-heading {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-light);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: right;
+    border-right: 4px solid var(--accent-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.feature-card h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+}
+
+.feature-card p {
+    color: var(--gray-text);
+}
+
+/* =======================================================
+    3. تنسيق تطبيق المهام الرئيسي (The Main App)
+    ======================================================= */
+#main {
+    padding: 50px 0; /* تقليل المساحة العلوية والسفلية */
+    display: none; 
+    justify-content: center; 
+    align-items: flex-start; /* تغيير التوسيط العمودي */
+    min-height: 100vh;
+}
+
+#main-containar {
+    width: 95%; /* زيادة العرض قليلاً */
+    max-width: 800px; 
+    height: auto; 
+    background-color: var(--card-bg);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* ظل عصري */
+    border-radius: 10px;
+    padding: 10px 0;
+}
+
+#header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 20px;
+    text-align: center;
+}
+
+#add-new-mission-btn {
+    padding: 10px 15px;
+    font-size: 14px; /* حجم خط مناسب */
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: 700;
+}
+#add-new-mission-btn:hover {
+    background-color: #000;
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+hr {
+    border: 0.5px solid var(--border-color);
+}
+
+.mission-containar {
+    background-color: var(--mission-item-bg);
+    margin: 15px 20px; 
+    padding: 15px 10px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.mission-containar:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+#mission-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#mission-id {
+    font-size: 14px;
+    color: #666; /* رمادي أغمق */
+    font-weight: 400;
+}
+#mission-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-light);
+}
+#mission-date {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gray-text);
+}
+
+/* أزرار الإجراءات */
+.delete-btn, .edit-btn, .finish-btn {
+    width: 60px; /* زيادة عرض الزر قليلاً */
+    height: 35px;
+    font-size: 12px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    transition: background-color 0.3s;
+}
+#mision-btns {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.delete-btn {
+    background-color: var(--delete-color);
+}
+.delete-btn:hover {
+    background-color: var(--delete-hover);
+    cursor: pointer;
+}
+.edit-btn {
+    background-color: var(--accent-color);
+}
+.edit-btn:hover {
+    background-color: var(--edit-hover);
+    cursor: pointer;
+}
+.finish-btn {
+    background-color: var(--secondary-accent);
+}
+.finish-btn:hover {
+    background-color: var(--finish-hover);
+    cursor: pointer;
+}
+
+/* =======================================================
+    4. تنسيق النوافذ المنبثقة (Prompts)
+    ======================================================= */
+
+#add-promp-main, #edit-promp-main, #delete-promp-main {
+    position: fixed; /* تغيير Absolute إلى Fixed */
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.85); 
+    display: none; 
+    justify-content: center; 
+    align-items: center;
+    z-index: 2000; /* لضمان ظهورها فوق كل شيء */
+}
+
+#add-promp-containar, #edit-promp-containar {
+    width: 90%; 
+    max-width: 500px; /* تحديد أقصى عرض */
+    height: auto; 
+    background-color: var(--card-bg); 
+    border-radius: 10px;
+    padding: 20px; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+}
+
+#add-promp-title, #edit-promp-title {
+    margin: 10px 0 20px 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+#add-promp-input, #edit-promp-input {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+    border-radius: 8px;
+    border: none;
+    margin: 10px 0 30px 0;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%; /* استخدام كامل العرض */
+    background-color: #333; /* خلفية أدخل داكنة */
+    color: var(--text-light);
+}
+
+#add-promp-btns, #edit-promp-btns {
+    display: flex;
+    justify-content: flex-start; /* محاذاة الأزرار لليمين */
+    gap: 15px;
+}
+
+#add-promp-btns button, #edit-promp-btns button {
+    font-size: 16px;
+    padding: 8px 15px;
+    width: 120px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+#add-promp-submit-btn, #edit-promp-submit-btn {
+    background-color: var(--secondary-accent);
+}
+#add-promp-cancel-btn, #edit-promp-cancel-btn {
+    background-color: var(--delete-color);
+}
+
+#add-promp-submit-btn:hover, #edit-promp-submit-btn:hover {
+    background-color: var(--finish-hover);
+    cursor: pointer;
+}
+#add-promp-cancel-btn:hover, #edit-promp-cancel-btn:hover {
+    cursor: pointer;
+    background-color: var(--delete-hover);
+}
+
+/* نافذة الحذف المنبثقة */
+#delete-promp-details {
+    text-align: center;
+    width: 90%;
+    max-width: 350px;
+    height: auto;
+    background-color: var(--card-bg); 
+    border-radius: 10px;
+    padding: 20px;
+}
+#delete-promp-title {
+    font-size: 18px;
+    padding: 10px 0 20px 0;
+    font-weight: 700;
+}
+#delete-promp-btns {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 5px;
+    gap: 20px;
+}
+#delete-promp-btns button {
+    font-size: 14px;
+    width: 80px;
+    border-radius: 5px;
+    border: none;
+    padding: 8px;
+    font-weight: 700;
+}
+#delete-promp-yes-btn {
+    background-color: var(--delete-color);
+    color: white;
+}
+#delete-promp-yes-btn:hover {
+    background-color: var(--delete-hover);
+    cursor: pointer;
+}
+
+#delete-promp-no-btn {
+    background-color: var(--secondary-accent);
+    color: white;
+}
+#delete-promp-no-btn:hover {
+    background-color: var(--finish-hover);
+    cursor: pointer;
+}
+
+/* =======================================================
+    5. استجابة الأجهزة (Mobile Responsive)
+    ======================================================= */
+@media (max-width: 768px) {
+    /* تعديلات صفحة الترحيب */
+    .hero-section {
+        grid-template-columns: 1fr; 
+        text-align: center;
+        padding: 3rem 0 5rem;
+    }
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    .hero-content {
+        order: 2; 
+    }
+    .hero-visual {
+        order: 1;
+        margin-bottom: 2rem;
+    }
+    .task-icon {
+        width: 100px;
+        height: 100px;
+    }
+    .header nav {
+        display: none; 
+    }
+    .features-heading {
+        font-size: 2rem;
+    }
+    .feature-card {
+        text-align: center;
+        border-right: none;
+        border-top: 4px solid var(--accent-color);
+    }
+    
+    /* ==================================== */
+    /* تعديلات تطبيق المهام الرئيسية للجوال */
+    #main {
+        padding: 20px 0;
+    }
+    #main-containar {
+        width: 98%;
+        max-width: none;
+        margin: 0 10px; /* تباعد جانبي خفيف */
+    }
+    #header h2 {
+        font-size: 1.5rem; /* تصغير عنوان "مهامي" في التطبيق */
+    }
+    #add-new-mission-btn {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    /* ترتيب المهام في الجوال (Mission Item) */
+    .mission-containar {
+        flex-direction: column; /* عرض الأزرار تحت التفاصيل */
+        align-items: flex-start;
+        gap: 10px;
+        margin: 10px;
+        padding: 10px 15px;
+    }
+    #mission-details {
+        width: 100%;
+    }
+    #mission-name {
+        font-size: 16px;
+    }
+    #mission-date {
+        font-size: 11px;
+    }
+    #mision-btns {
+        width: 100%;
+        justify-content: space-between; /* توزيع الأزرار على كامل العرض */
+        gap: 5px;
+    }
+    .delete-btn, .edit-btn, .finish-btn {
+        width: 30%; /* جعل الأزرار تأخذ ثلث المساحة */
+        height: 30px;
+        font-size: 10px;
+    }
+
+    /* تعديلات النوافذ المنبثقة للجوال */
+    #add-promp-containar, #edit-promp-containar, #delete-promp-details {
+        padding: 15px;
+    }
+    #add-promp-title, #edit-promp-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    #add-promp-btns button, #edit-promp-btns button {
+        width: 100px;
+        font-size: 14px;
+    }
+}
+
+
